@@ -1,5 +1,6 @@
 // 42 frases - UNA POR PÁGINA
 const frases = [
+    "",
     "Consejo para la juventud: Que tengan su mente abierta hacer cosas positivas que puedan ser mejor para su propia salud y ser independientes|Eduardo Garcia",
     "Queridos compañeros pensemos que estamos en un convivio que la comida es para todos no nada mas para los primeros por que los últimos no alcanzan|",
     "Es muy importante cuidarse desde niño si no es asi cuando entra a cierta edad es cuando se complica mas cualquiera que se a enfermedad|",
