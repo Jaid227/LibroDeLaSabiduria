@@ -3,31 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Libro de Sabiduría - Páginas interactivas</title>
+    <title>Libro de Sabiduría - Una frase por página</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="book-container">
         <div class="book">
-            <!-- Portada - SOLO LA IMAGEN -->
+            <!-- Portada -->
             <div class="page cover-page" id="coverPage">
                 <img src="imagenes/portada.jpeg" alt="Portada" id="coverImage" class="cover-image-full">
             </div>
 
-            <!-- Páginas interiores -->
+            <!-- Páginas interiores (una por frase) -->
             <div class="pages-container" id="pagesContainer"></div>
 
-            <!-- Contraportada - SOLO LA IMAGEN -->
+            <!-- Contraportada -->
             <div class="page back-cover-page" id="backCoverPage">
                 <img src="imagenes/contraportada.jpeg" alt="Contraportada" id="backCoverImage" class="backcover-image-full">
             </div>
         </div>
 
-        <!-- Controles fuera del libro -->
+        <!-- Controles -->
         <div class="nav-controls">
             <button class="nav-btn prev-btn" id="prevBtn">◀ Anterior</button>
             <span class="page-indicator" id="pageIndicator">Portada</span>
             <button class="nav-btn next-btn" id="nextBtn">Siguiente ▶</button>
+        </div>
+
+        <div class="extra-controls">
+            <button class="jump-btn" id="jumpBtn">Contraportada</button>
         </div>
 
         <div class="swipe-instruction">
