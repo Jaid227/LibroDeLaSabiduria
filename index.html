@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Libro de Sabiduría - Páginas interactivas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="book-container">
+        <div class="book">
+            <!-- Portada - SOLO LA IMAGEN -->
+            <div class="page cover-page" id="coverPage">
+                <img src="imagenes/portada.jpeg" alt="Portada" id="coverImage" class="cover-image-full">
+            </div>
+
+            <!-- Páginas interiores -->
+            <div class="pages-container" id="pagesContainer"></div>
+
+            <!-- Contraportada - SOLO LA IMAGEN -->
+            <div class="page back-cover-page" id="backCoverPage">
+                <img src="imagenes/contraportada.jpeg" alt="Contraportada" id="backCoverImage" class="backcover-image-full">
+            </div>
+        </div>
+
+        <!-- Controles fuera del libro -->
+        <div class="nav-controls">
+            <button class="nav-btn prev-btn" id="prevBtn">◀ Anterior</button>
+            <span class="page-indicator" id="pageIndicator">Portada</span>
+            <button class="nav-btn next-btn" id="nextBtn">Siguiente ▶</button>
+        </div>
+
+        <div class="swipe-instruction">
+            <span>👆 Desliza el dedo para cambiar de página</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
