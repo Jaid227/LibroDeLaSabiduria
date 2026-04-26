@@ -1,4 +1,4 @@
-// Frases del libro
+// 42 frases - UNA POR PÁGINA
 const frases = [
     "Consejo para la juventud: Que tengan su mente abierta hacer cosas positivas que puedan ser mejor para su propia salud y ser independientes|Eduardo Garcia",
     "Queridos compañeros pensemos que estamos en un convivio que la comida es para todos no nada mas para los primeros por que los últimos no alcanzan|",
@@ -44,9 +44,9 @@ const frases = [
 
 class LibroInteractivo {
     constructor() {
-        this.currentIndex = -1;
-        this.pages = [];
-        this.totalPages = 0;
+        this.currentIndex = -1; // -1: portada, 0..41: páginas interiores, 42: contraportada
+        this.totalFrases = frases.length; // 42 páginas interiores
+        this.totalPages = this.totalFrases; // 42
         this.touchStartX = 0;
         this.touchEndX = 0;
         this.isAnimating = false;
@@ -63,15 +63,14 @@ class LibroInteractivo {
         const coverImg = document.getElementById('coverImage');
         const backCoverImg = document.getElementById('backCoverImage');
         
-        // Si no cargan las imágenes, mostrar color de fondo
         coverImg.onerror = () => {
             coverImg.style.objectFit = 'cover';
-            coverImg.style.backgroundColor = '#667eea';
+            coverImg.style.backgroundColor = '#8B4513';
         };
         
         backCoverImg.onerror = () => {
             backCoverImg.style.objectFit = 'cover';
-            backCoverImg.style.backgroundColor = '#764ba2';
+            backCoverImg.style.backgroundColor = '#2c1810';
         };
     }
     
@@ -79,70 +78,44 @@ class LibroInteractivo {
         const pagesContainer = document.getElementById('pagesContainer');
         pagesContainer.innerHTML = '';
         
-        // Agrupar frases en páginas (3-4 frases por página)
-        const frasesPorPagina = 3;
-        for (let i = 0; i < frases.length; i += frasesPorPagina) {
-            const pageFrases = frases.slice(i, i + frasesPorPagina);
-            this.pages.push(pageFrases);
-        }
-        
-        this.totalPages = this.pages.length;
-        
-        // Crear elementos de página interior
-        this.pages.forEach((frasesPagina, idx) => {
+        // Crear una página por cada frase
+        frases.forEach((frase, idx) => {
+            const [texto, autor] = frase.split('|');
             const pageDiv = document.createElement('div');
             pageDiv.className = 'page inner-page';
             pageDiv.id = `page_${idx}`;
             pageDiv.style.display = 'none';
             
-            // En la primera página (índice 0) mostrar título y fecha
-            let bookInfoHtml = '';
+            const today = new Date();
+            const fechaFormateada = today.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Primera página (índice 0) tiene título e información
+            let firstPageInfo = '';
             if (idx === 0) {
-                const today = new Date();
-                const fechaFormateada = today.toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                bookInfoHtml = `
-                    <div class="book-info">
-                        <h1 class="book-title">Libro de Sabiduría</h1>
-                        <p class="book-date">📅 Fecha de creación: ${fechaFormateada}</p>
-                        <p class="book-meta">📖 Consejos y reflexiones para la vida</p>
+                firstPageInfo = `
+                    <div class="first-page-info">
+                        <h1>📖 Libro de Sabiduría</h1>
+                        <p>📅 ${fechaFormateada}</p>
+                        <p>✨ Consejos y reflexiones para la vida ✨</p>
                     </div>
                 `;
             }
             
             pageDiv.innerHTML = `
-                ${bookInfoHtml}
-                <div class="page-header">
-                    <h3>Página ${idx + 1}</h3>
-                </div>
-                <div class="page-content" id="content_${idx}">
-                </div>
-                <div class="page-footer">
-                    <span>✨ Sabiduría compartida ✨</span>
+                ${firstPageInfo}
+                <div class="quote-container">
+                    <div class="quote-text">${texto.trim()}</div>
+                    <div class="quote-separator"></div>
+                    ${autor && autor.trim() ? `<div class="quote-author">✍️ ${autor.trim()}</div>` : ''}
                 </div>
                 <div class="page-number">${idx + 1}</div>
             `;
             
             pagesContainer.appendChild(pageDiv);
-            
-            // Agregar frases al contenido
-            const contentDiv = pageDiv.querySelector(`#content_${idx}`);
-            frasesPagina.forEach(frase => {
-                const partes = frase.split('|');
-                const texto = partes[0];
-                const autor = partes[1] || '';
-                const quoteDiv = document.createElement('div');
-                quoteDiv.className = 'quote-item';
-                quoteDiv.innerHTML = `
-                    <div class="quote-text">💬 ${texto.trim()}</div>
-                    ${autor && autor.trim() ? `<div class="quote-author">✍️ ${autor.trim()}</div>` : ''}
-                    <div class="separator"></div>
-                `;
-                contentDiv.appendChild(quoteDiv);
-            });
         });
     }
     
@@ -150,9 +123,10 @@ class LibroInteractivo {
         const book = document.querySelector('.book');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const jumpBtn = document.getElementById('jumpBtn');
         const coverPage = document.getElementById('coverPage');
         
-        // Eventos táctiles para deslizar
+        // Eventos táctiles
         let touchStartX = 0;
         let touchEndX = 0;
         
@@ -165,7 +139,7 @@ class LibroInteractivo {
             if (this.isAnimating) return;
             touchEndX = e.changedTouches[0].clientX;
             const diff = touchEndX - touchStartX;
-            if (Math.abs(diff) > 50) {
+            if (Math.abs(diff) > 40) {
                 if (diff > 0) {
                     this.prevPage();
                 } else {
@@ -174,19 +148,18 @@ class LibroInteractivo {
             }
         });
         
-        // Eventos de mouse para escritorio
+        // Eventos de mouse
         let mouseStartX = 0;
         book.addEventListener('mousedown', (e) => {
             if (this.isAnimating) return;
             mouseStartX = e.clientX;
-            e.preventDefault();
         });
         
         book.addEventListener('mouseup', (e) => {
             if (this.isAnimating) return;
             const mouseEndX = e.clientX;
             const diff = mouseEndX - mouseStartX;
-            if (Math.abs(diff) > 50) {
+            if (Math.abs(diff) > 40) {
                 if (diff > 0) {
                     this.prevPage();
                 } else {
@@ -195,7 +168,7 @@ class LibroInteractivo {
             }
         });
         
-        // Botones de navegación
+        // Botones
         prevBtn.addEventListener('click', () => {
             this.prevPage();
         });
@@ -204,7 +177,27 @@ class LibroInteractivo {
             this.nextPage();
         });
         
-        // Clic en portada para abrir el libro
+        // Botón de salto (Contraportada/Portada)
+        jumpBtn.addEventListener('click', () => {
+            if (this.currentIndex === -1) {
+                // Ir a contraportada
+                this.currentIndex = this.totalPages;
+                this.updateView();
+                this.addPageAnimation('page-slide-left');
+            } else if (this.currentIndex === this.totalPages) {
+                // Ir a portada
+                this.currentIndex = -1;
+                this.updateView();
+                this.addPageAnimation('page-slide-right');
+            } else {
+                // Si está en páginas interiores, ir a contraportada
+                this.currentIndex = this.totalPages;
+                this.updateView();
+                this.addPageAnimation('page-slide-left');
+            }
+        });
+        
+        // Clic en portada
         coverPage.addEventListener('click', () => {
             if (this.currentIndex === -1) {
                 this.currentIndex = 0;
@@ -218,32 +211,39 @@ class LibroInteractivo {
         if (this.isAnimating) return;
         
         if (this.currentIndex === -1) {
+            // Portada -> primera página interior
             this.currentIndex = 0;
             this.updateView();
             this.addPageAnimation('page-slide-left');
         } else if (this.currentIndex < this.totalPages - 1) {
+            // Siguiente página interior
             this.currentIndex++;
             this.updateView();
             this.addPageAnimation('page-slide-left');
         } else if (this.currentIndex === this.totalPages - 1) {
+            // Última página interior -> contraportada
             this.currentIndex = this.totalPages;
             this.updateView();
             this.addPageAnimation('page-slide-left');
         }
+        // Si está en contraportada, no hace nada
     }
     
     prevPage() {
         if (this.isAnimating) return;
         
         if (this.currentIndex === this.totalPages) {
+            // Contraportada -> última página interior
             this.currentIndex = this.totalPages - 1;
             this.updateView();
             this.addPageAnimation('page-slide-right');
         } else if (this.currentIndex > 0) {
+            // Página interior anterior
             this.currentIndex--;
             this.updateView();
             this.addPageAnimation('page-slide-right');
         } else if (this.currentIndex === 0) {
+            // Primera página interior -> portada
             this.currentIndex = -1;
             this.updateView();
             this.addPageAnimation('page-slide-right');
@@ -270,6 +270,7 @@ class LibroInteractivo {
         const coverPage = document.getElementById('coverPage');
         const backCoverPage = document.getElementById('backCoverPage');
         const innerPages = document.querySelectorAll('.inner-page');
+        const jumpBtn = document.getElementById('jumpBtn');
         
         coverPage.style.display = 'none';
         backCoverPage.style.display = 'none';
@@ -280,14 +281,17 @@ class LibroInteractivo {
         if (this.currentIndex === -1) {
             coverPage.style.display = 'flex';
             this.updateIndicator('📖 Portada');
+            jumpBtn.textContent = 'Contraportada';
         } else if (this.currentIndex === this.totalPages) {
             backCoverPage.style.display = 'flex';
             this.updateIndicator('📕 Contraportada');
+            jumpBtn.textContent = 'Portada';
         } else {
             const targetPage = document.getElementById(`page_${this.currentIndex}`);
             if (targetPage) {
                 targetPage.style.display = 'flex';
                 this.updateIndicator(`📄 Página ${this.currentIndex + 1} de ${this.totalPages}`);
+                jumpBtn.textContent = 'Contraportada';
             }
         }
         
@@ -308,25 +312,19 @@ class LibroInteractivo {
         if (prevBtn && nextBtn) {
             if (this.currentIndex === -1) {
                 prevBtn.style.opacity = '0.5';
-                prevBtn.style.cursor = 'not-allowed';
                 nextBtn.style.opacity = '1';
-                nextBtn.style.cursor = 'pointer';
             } else if (this.currentIndex === this.totalPages) {
                 prevBtn.style.opacity = '1';
-                prevBtn.style.cursor = 'pointer';
                 nextBtn.style.opacity = '0.5';
-                nextBtn.style.cursor = 'not-allowed';
             } else {
                 prevBtn.style.opacity = '1';
-                prevBtn.style.cursor = 'pointer';
                 nextBtn.style.opacity = '1';
-                nextBtn.style.cursor = 'pointer';
             }
         }
     }
 }
 
-// Inicializar cuando el DOM esté listo
+// Inicializar
 document.addEventListener('DOMContentLoaded', () => {
     new LibroInteractivo();
 });
