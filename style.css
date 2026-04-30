@@ -133,29 +133,62 @@ body {
     font-family: 'Georgia', serif;
 }
 
-/* Información en la PRIMERA página interior */
-.first-page-info {
-    text-align: center;
-    margin: 50%;
-    padding: 40px 20px;
-    border-bottom: 30px solid #c9a96b;
+/* ============================================ */
+/* PRIMERA PÁGINA INTERIOR - TOTALMENTE CENTRADA */
+/* ============================================ */
+.first-page-wrapper {
     width: 100%;
-    height: 50%;
-    box-sizing: border-box;
-    background: linear-gradient(to bottom, #fef9e6, #fff);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
 }
 
-.first-page-info h1 {
-    font-size: 78px;
-    margin: 0 0 20px 0;
+.first-page-title {
+    font-size: clamp(2rem, 10vw, 4.5rem);
+    font-weight: bold;
     color: #2c1810;
     letter-spacing: 2px;
-    font-weight: bold;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
-.first-page-info p {
-    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+.first-page-subtitle {
+    font-size: clamp(1rem, 5vw, 1.8rem);
     color: #8b7355;
+    margin: 0.5em 0;
+    font-style: italic;
+}
+
+.first-page-date {
+    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    color: #a08060;
+    margin: 0.3em 0;
+    letter-spacing: 1px;
+}
+
+.first-page-divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #c9a96b, #f0d5a8, #c9a96b);
+    margin: 25px auto;
+    border-radius: 3px;
+}
+
+.first-page-icon {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    margin: 20px 0 10px 0;
+}
+
+.first-page-footer {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    color: #b8a07c;
+    margin-top: 30px;
+    font-style: normal;
 }
 
 /* Controles de navegación */
@@ -314,6 +347,10 @@ body {
         bottom: 15px;
         right: 18px;
     }
+
+    .first-page-wrapper {
+        padding: 15px;
+    }
 }
 
 /* Móviles muy pequeños */
@@ -346,6 +383,11 @@ body {
     
     .jump-btn {
         padding: 8px 25px;
+    }
+
+    .first-page-divider {
+        width: 50px;
+        margin: 15px auto;
     }
 }
 
