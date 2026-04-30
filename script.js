@@ -103,7 +103,7 @@ class LibroInteractivo {
                         <div class="first-page-title">Libro de Sabiduría</div>
                         <div class="first-page-divider"></div>
                         <div class="first-page-subtitle">Consejos y reflexiones para la vida</div>
-                        <div class="first-page-date">📅 ${fechaFormateada}</div>
+                        <div class="first-page-date">📅 ${"22 de abril 2026"}</div>
                         <div class="first-page-footer">✨ Una frase, una enseñanza ✨</div>
                     </div>
                     <div class="page-number">1</div>
