@@ -99,12 +99,12 @@ class LibroInteractivo {
             if (idx === 0) {
                 pageDiv.innerHTML = `
                     <div class="first-page-wrapper">
-                        <div class="first-page-icon">📖</div>
+                        <div class="first-page-icon"></div>
                         <div class="first-page-title">Libro de Sabiduría</div>
                         <div class="first-page-divider"></div>
                         <div class="first-page-subtitle">Consejos y reflexiones para la vida</div>
-                        <div class="first-page-date">📅 ${"22 de abril 2026"}</div>
-                        <div class="first-page-footer">✨ Una frase, una enseñanza ✨</div>
+                        <div class="first-page-date"> ${"22 de abril 2026"}</div>
+                        <div class="first-page-footer"> Una frase, una enseñanza </div>
                     </div>
                     <div class="page-number">1</div>
                 `;
@@ -114,7 +114,7 @@ class LibroInteractivo {
                     <div class="quote-container">
                         <div class="quote-text">${texto ? texto.trim() : ''}</div>
                         <div class="quote-separator"></div>
-                        ${autor && autor.trim() ? `<div class="quote-author">✍️ ${autor.trim()}</div>` : ''}
+                        ${autor && autor.trim() ? `<div class="quote-author"> ${autor.trim()}</div>` : ''}
                     </div>
                     <div class="page-number">${idx + 1}</div>
                 `;
@@ -285,17 +285,17 @@ class LibroInteractivo {
         
         if (this.currentIndex === -1) {
             coverPage.style.display = 'flex';
-            this.updateIndicator('📖 Portada');
+            this.updateIndicator(' Portada');
             jumpBtn.textContent = 'Contraportada';
         } else if (this.currentIndex === this.totalPages) {
             backCoverPage.style.display = 'flex';
-            this.updateIndicator('📕 Contraportada');
+            this.updateIndicator(' Contraportada');
             jumpBtn.textContent = 'Portada';
         } else {
             const targetPage = document.getElementById(`page_${this.currentIndex}`);
             if (targetPage) {
                 targetPage.style.display = 'flex';
-                this.updateIndicator(`📄 Página ${this.currentIndex + 1} de ${this.totalPages}`);
+                this.updateIndicator(` Página ${this.currentIndex + 1} de ${this.totalPages}`);
                 jumpBtn.textContent = 'Contraportada';
             }
         }
